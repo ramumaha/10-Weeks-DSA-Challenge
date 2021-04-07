@@ -1,44 +1,92 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
+#define int long long
+#define endl '\n'
 using namespace std;
-#define ll long long
 
-ll int n;
-bool good(ll x)
+int ans;
+
+bool binarySearch(int arr[], int l, int r, int n)
 {
-    return n%x<=(n/2);
+    if (l <= r)
+    {
+        int mid = (l + r) / 2;
+        // cout<<arr[mid]<<endl;
+
+        if ( (mid - 1 >= 0) && (arr[mid-1] > arr[mid]))
+        {
+            ans++;
+            if (ans > 1)
+                return false;
+        }
+
+        return binarySearch(arr, l, mid - 1, n) && binarySearch(arr, mid + 1, r, n);
+    }
+
+    return true;
 }
 
-
-void solve()
+void solve(int arr[], int n)
 {
-    cin>>n;
-    ll int l=1,r=n+1;
-    while(r>l+1)
+    if (n == 1)
     {
-        ll m=(r+l)/2;
-        if(good(m))
+        cout << "YES" << endl;
+        cout << 0 << endl;
+        return;
+    }
+
+    if (n == 2)
+    {
+        if (arr[0] <= arr[1])
         {
-            l=m;
+            cout << "YES" << endl;
+            cout << 0 << endl;
         }
         else
         {
-            r=m;
+            cout << "YES" << endl;
+            cout << 1 << endl;
+        }
+        return;
+    }
+
+    ans = 0;
+    if(arr[n-1] > arr[0])
+        ans++;
+
+    bool res = binarySearch(arr, 0, n - 1, n);
+    if (res == false)
+        cout << "NO" << endl;
+    else {
+        // cout << ans << endl;
+        if(ans == 1 && arr[n-1] == arr[0]) {
+            cout << "YES" << endl;
+            cout << 1 << endl;
+        }
+        else if(ans <= 1 && arr[n-1] >= arr[0]) {
+            cout << "YES" << endl;
+            cout << 0 << endl;
+        }
+        else {
+            cout << "YES" << endl;
+            cout << 1 << endl;
         }
     }
-    cout<<l<<"\n";
 }
 
-
-
-
-int main()
+signed main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    long long int t;
-    cin>>t;
-    while(t--)
+    int tc;
+    cin >> tc;
+
+    while (tc--)
     {
-        solve();
+        int n;
+        cin >> n;
+
+        int arr[n];
+        for (int i = 0; i < n; i++)
+            cin >> arr[i];
+        solve(arr, n);
     }
+    return 0;
 }

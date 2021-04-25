@@ -28,7 +28,19 @@ class Graph
         }
     }
 
-    void dfshelper(int src,unordered_set<int>&visited)
+    void print_adj()
+    {
+        for(int i=0;i<v;i++)
+        {
+            for(int j=0;j<v;j++)
+            {
+                cout<<adj[i][j]<<" ";
+            }
+            cout<<"\n";
+        }
+    }
+
+    void dfshelper(int src,unordered_set<int>&visited) //stacks used;
     {
         visited.insert(src);
         cout<<char('A'+src)<<" ";
@@ -46,6 +58,28 @@ class Graph
         unordered_set<int>visited;
         dfshelper(0,visited);}
 
+    void bfshelper(int src)
+    {   queue<int>q;
+        bool *visited=new bool[this->v];
+        for(int i=0;i<this->v;i++)
+        {visited[i]=0;}
+        q.push(src);
+        visited[src]=1;
+        while(!q.empty())
+        {   src=q.front();
+            cout<<char(src+'A')<<" ";
+            q.pop();
+            for (int i = 0; i < v; i++) {
+            if (adj[src][i] == 1 && (!visited[i])) {
+                q.push(i);
+                visited[i] = true;
+            }           
+        }}}
+
+    void bfs()
+    {
+        bfshelper(0);
+    }
     
 };
 
@@ -61,8 +95,12 @@ int main()
       cin>>u>>v;
       G.add_edge(u,v);
   }
-  cout<<"DFS traversal between cities \n";
+  cout<<"The adjacency matrix of the graph \n";
+  G.print_adj();
+  cout<<"\nDFS traversal between cities \n";
   G.dfs();
+  cout<<"\nBFS traversal between cities \n";
+  G.bfs();
   
 
 }
